@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
 
@@ -27,6 +28,19 @@ static inline void sk68xx_code_one()
     gpio_pin_set_dt(&led, 0);
     k_busy_wait(LOW_TIME);
 }
+
+union rgb_code
+{
+    struct
+    {
+        uint8_t b;
+        uint8_t r;
+        uint8_t g;
+        uint8_t not_used;
+    } val;
+    uint32_t data;
+};
+
 #define RGB(_g, _r, _b) \
     (union rgb_code)    \
     {                   \
@@ -36,6 +50,22 @@ static inline void sk68xx_code_one()
             .b = _b     \
         }               \
     }
+
+static inline void sk68xx_color(const union rgb_code rgb)
+{
+    int index = 24;
+    while (index)
+    {
+        if (rgb.data & (1 << --index))
+        {
+            sk68xx_code_one();
+        }
+        else
+        {
+            sk68xx_code_zero();
+        }
+    }
+}
 
 int main(void)
 {
@@ -56,16 +86,18 @@ int main(void)
 
     printk("Hello world\n");
 
+    union rgb_code color = {
+        .val =
+            {
+                .g = 0,
+                .r = 0,
+                .b = 10,
+            }};
+
     for (;;)
     {
-        // gpio_pin_set_dt(&led, 1);
-        // // k_msleep(100);
-        // k_busy_wait(3);
-        // gpio_pin_set_dt(&led, 0);
-        // // k_msleep(100);
-        // k_busy_wait(3);
-        sk68xx_code_zero();
-        sk68xx_code_one();
+        sk68xx_color(color);
+        sk68xx_code_reset();
     }
 
     return 0;
