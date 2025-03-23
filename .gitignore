@@ -53,3 +53,4 @@ dkms.conf
 
 # Application stuff
 build/
+.vscode/settings.json
