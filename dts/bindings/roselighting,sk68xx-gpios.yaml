@@ -1,8 +1,8 @@
 # Copyright (c) 2025 James Wu <jameswu62@yahoo.co.nz>
 # SPDX-License-Identifier: Apache-2.0
 
-compatible: "roselighting,sk68xxminihs"
-description: SK68XXMINI-HS RGB LED
+compatible: "roselighting,sk68xx"
+description: SK68XX RGB LED
 include: [led-strip.yaml]
 
 properties:
