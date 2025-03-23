@@ -1,0 +1,15 @@
+# Copyright (c) 2025 James Wu <jameswu62@yahoo.co.nz>
+# SPDX-License-Identifier: Apache-2.0
+
+compatible: "roselighting,sk68xxminihs"
+description: SK68XXMINI-HS RGB LED
+include: [led-strip.yaml]
+
+properties:
+  gpios:
+    required: true
+    type: phandle-array
+    description: |
+      GPIO to send command data to the controller.
+
+      
