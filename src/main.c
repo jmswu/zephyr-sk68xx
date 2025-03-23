@@ -12,7 +12,7 @@ int main(void)
 
     printk("Hello world\n");
 
-    union rgb_code color = RGB(5, 5, 5);
+    union rgb_code color = SK68XX_RGB(5, 5, 5);
 
     for (;;)
     {

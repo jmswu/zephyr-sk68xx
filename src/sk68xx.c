@@ -12,17 +12,43 @@ static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
 static inline void sk68xx_code_zero()
 {
-    gpio_pin_set_dt(&led, 1);
-    gpio_pin_set_dt(&led, 0);
+    int ret;
+    ret = gpio_pin_set_dt(&led, 1);
+    if (ret < 0)
+    {
+        return ret;
+    }
+    ret = gpio_pin_set_dt(&led, 0);
+    if (ret < 0)
+    {
+        return ret;
+    }
     k_busy_wait(SK68xx_T0L);
+
+    return EXIT_SUCCESS;
 }
 
 static inline void sk68xx_code_one()
 {
+    int ret;
     gpio_pin_set_dt(&led, 1);
+    if (ret < 0)
+    {
+        return ret;
+    }
     gpio_pin_set_dt(&led, 1);
+    if (ret < 0)
+    {
+        return ret;
+    }
     gpio_pin_set_dt(&led, 0);
+    if (ret < 0)
+    {
+        return ret;
+    }
     k_busy_wait(SK68xx_T1L);
+
+    return EXIT_SUCCESS;
 }
 
 int sk68xx_init()
@@ -38,6 +64,8 @@ int sk68xx_init()
     {
         return -EXIT_FAILURE;
     }
+
+    return EXIT_SUCCESS;
 }
 
 int sk68xx_update_rgb(const union rgb_code rgb)

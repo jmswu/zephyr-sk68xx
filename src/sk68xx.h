@@ -17,14 +17,14 @@ extern "C"
         uint32_t data;
     };
 
-#define RGB(_r, _g, _b) \
-    (union rgb_code)    \
-    {                   \
-        .val = {        \
-            .b = _b,    \
-            .r = _r,    \
-            .g = _g,    \
-        }               \
+#define SK68XX_RGB(_r, _g, _b) \
+    (union rgb_code)           \
+    {                          \
+        .val = {               \
+            .b = _b,           \
+            .r = _r,           \
+            .g = _g,           \
+        }                      \
     }
 
     int sk68xx_init();
