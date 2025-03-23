@@ -4,21 +4,23 @@
 #include <zephyr/drivers/gpio.h>
 
 #define LED_NODE DT_ALIAS(led0)
-#define LOW_TIME (2U)
+#define SK68xx_T0L (2U)
+#define SK68xx_T1L (2U)
+#define SK68xx_Trst (85U)
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
 static inline void sk68xx_code_reset()
 {
     gpio_pin_set_dt(&led, 0);
-    k_busy_wait(85);
+    k_busy_wait(SK68xx_Trst);
 }
 
 static inline void sk68xx_code_zero()
 {
     gpio_pin_set_dt(&led, 1);
     gpio_pin_set_dt(&led, 0);
-    k_busy_wait(LOW_TIME);
+    k_busy_wait(SK68xx_T0L);
 }
 
 static inline void sk68xx_code_one()
@@ -26,7 +28,7 @@ static inline void sk68xx_code_one()
     gpio_pin_set_dt(&led, 1);
     gpio_pin_set_dt(&led, 1);
     gpio_pin_set_dt(&led, 0);
-    k_busy_wait(LOW_TIME);
+    k_busy_wait(SK68xx_T1L);
 }
 
 union rgb_code
@@ -41,13 +43,13 @@ union rgb_code
     uint32_t data;
 };
 
-#define RGB(_g, _r, _b) \
+#define RGB(_r, _g, _b) \
     (union rgb_code)    \
     {                   \
         .val = {        \
-            .g = _g,    \
+            .b = _b,    \
             .r = _r,    \
-            .b = _b     \
+            .g = _g,    \
         }               \
     }
 
@@ -86,13 +88,7 @@ int main(void)
 
     printk("Hello world\n");
 
-    union rgb_code color = {
-        .val =
-            {
-                .g = 0,
-                .r = 0,
-                .b = 10,
-            }};
+    union rgb_code color = RGB(10, 0, 0);
 
     for (;;)
     {
