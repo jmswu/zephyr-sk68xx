@@ -31,21 +31,25 @@ static inline int sk68xx_code_zero()
 static inline int sk68xx_code_one()
 {
     int ret;
+
     ret = gpio_pin_set_dt(&led, 1);
     if (ret < 0)
     {
         return ret;
     }
+
     ret = gpio_pin_set_dt(&led, 1);
     if (ret < 0)
     {
         return ret;
     }
+
     ret = gpio_pin_set_dt(&led, 0);
     if (ret < 0)
     {
         return ret;
     }
+
     k_busy_wait(SK68xx_T1L);
 
     return EXIT_SUCCESS;
@@ -60,6 +64,12 @@ int sk68xx_init()
     }
 
     ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    if (ret < 0)
+    {
+        return -EXIT_FAILURE;
+    }
+
+    ret = sk68xx_update_rgb(SK68XX_RGB(0, 0, 0));
     if (ret < 0)
     {
         return -EXIT_FAILURE;

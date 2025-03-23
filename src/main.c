@@ -13,11 +13,11 @@ int main(void)
     printk("Hello world\n");
 
     union rgb_code color = SK68XX_RGB(5, 5, 5);
+    sk68xx_update_rgb(color);
+    sk68xx_reset();
 
     for (;;)
     {
-        sk68xx_update_rgb(color);
-        sk68xx_reset();
         k_msleep(1000);
     }
 
