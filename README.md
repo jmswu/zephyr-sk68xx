@@ -1,0 +1,1 @@
+# zephyr-sk68xxmini-hs
