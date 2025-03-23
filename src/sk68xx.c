@@ -10,7 +10,7 @@
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
-static inline void sk68xx_code_zero()
+static inline int sk68xx_code_zero()
 {
     int ret;
     ret = gpio_pin_set_dt(&led, 1);
@@ -28,20 +28,20 @@ static inline void sk68xx_code_zero()
     return EXIT_SUCCESS;
 }
 
-static inline void sk68xx_code_one()
+static inline int sk68xx_code_one()
 {
     int ret;
-    gpio_pin_set_dt(&led, 1);
+    ret = gpio_pin_set_dt(&led, 1);
     if (ret < 0)
     {
         return ret;
     }
-    gpio_pin_set_dt(&led, 1);
+    ret = gpio_pin_set_dt(&led, 1);
     if (ret < 0)
     {
         return ret;
     }
-    gpio_pin_set_dt(&led, 0);
+    ret = gpio_pin_set_dt(&led, 0);
     if (ret < 0)
     {
         return ret;
@@ -60,6 +60,12 @@ int sk68xx_init()
     }
 
     ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+    if (ret < 0)
+    {
+        return -EXIT_FAILURE;
+    }
+
+    ret = sk68xx_reset();
     if (ret < 0)
     {
         return -EXIT_FAILURE;
