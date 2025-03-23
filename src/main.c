@@ -27,6 +27,15 @@ static inline void sk68xx_code_one()
     gpio_pin_set_dt(&led, 0);
     k_busy_wait(LOW_TIME);
 }
+#define RGB(_g, _r, _b) \
+    (union rgb_code)    \
+    {                   \
+        .val = {        \
+            .g = _g,    \
+            .r = _r,    \
+            .b = _b     \
+        }               \
+    }
 
 int main(void)
 {
